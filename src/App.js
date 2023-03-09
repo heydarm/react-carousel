@@ -7,11 +7,11 @@ function App() {
   const [direction, setDirection] = useState("");
 
   const moveToPrev = () => {
+    setCurrentCard((prev) => {
+      const nextValue = prev - 1;
+      return nextValue < 0 ? listOfCards.length - 1 : nextValue;
+    });
     setTimeout(() => {
-      setCurrentCard((prev) => {
-        const nextValue = prev - 1;
-        return nextValue < 0 ? listOfCards.length - 1 : nextValue;
-      });
       setDirection("");
     }, 250);
 
@@ -52,10 +52,10 @@ function App() {
           if (direction) {
             if (index === 0) {
               className = direction === "prev" ? "grow" : "shrink";
-            }
-
-            if (index === filteredCard.length - 1) {
+            } else if (index === filteredCard.length - 1) {
               className = direction === "prev" ? "shrink" : "grow";
+            } else {
+              className = direction === "prev" ? "slide-left" : "slide-right";
             }
           }
 
@@ -84,9 +84,9 @@ const Card = ({ title, index, color, className }) => {
     <div
       className={`card ${className}`}
       style={{
+        "--pos": index,
         backgroundColor: color,
         height: diff * 30,
-        left: index * 40,
         zIndex: diff + 1,
       }}
     >
