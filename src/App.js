@@ -45,27 +45,14 @@ function App() {
 
   return (
     <div className="app">
-      <div className="cards">
+      <div className={`cards direction-${direction}`}>
         {filteredCard.map((item, index) => {
-          let className;
-
-          if (direction) {
-            if (index === 0) {
-              className = direction === "prev" ? "grow" : "shrink";
-            } else if (index === filteredCard.length - 1) {
-              className = direction === "prev" ? "shrink" : "grow";
-            } else {
-              className = direction === "prev" ? "slide-left" : "slide-right";
-            }
-          }
-
           return (
             <Card
-              key={item.color + className}
+              key={item.color}
               title={item.title}
               index={index}
               color={item.color}
-              className={className}
             />
           );
         })}
@@ -77,17 +64,14 @@ function App() {
   );
 }
 
-const Card = ({ title, index, color, className }) => {
-  const diff = listOfCards.length - index;
-
+const Card = ({ title, index, color }) => {
   return (
     <div
-      className={`card ${className}`}
+      className="card"
       style={{
         "--pos": index,
+        "--last-pos": listOfCards.length - index,
         backgroundColor: color,
-        height: diff * 30,
-        zIndex: diff + 1,
       }}
     >
       {title}
